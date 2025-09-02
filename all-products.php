@@ -1,0 +1,179 @@
+<?php
+$host = 'localhost';
+$db   = 'my';
+$user = 'root';
+$pass = 'root';
+$port = 8889;
+
+$conn = new mysqli($host, $user, $pass, $db, $port);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Product - Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7f9;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .sidebar a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .sidebar a:hover { background: #34495e; }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: #fff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topbar h1 {
+      font-size: 24px;
+      color: #2c3e50;
+    }
+    .content {
+      padding: 30px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .content h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 26px;
+      color: #2c3e50;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #219150;
+    }
+    .button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.action-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #7f5af0, #ff80bf);
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(127, 90, 240, 0.3);
+  transition: all 0.3s ease;
+  min-width: 240px;
+  text-align: center;
+}
+
+.action-btn:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(135deg, #ff80bf, #7f5af0);
+  box-shadow: 0 10px 25px rgba(255, 128, 191, 0.4);
+}
+
+  </style>
+</head>
+<body>
+   <div class="sidebar">
+    <h2>Admin Panel</h2>
+   <a href="indexadmin.html"> Dashboard</a>
+    <!-- <a href="#"> Orders</a> -->
+    <a href="add-product.php">Add Product</a>
+    <a href="all-products.php"> All Products </a>
+  </div>
+
+
+  <div class="main">
+    <div class="topbar">
+      <h1>All Product</h1>
+      <div>Welcome, Admin</div>
+    </div>
+    <div class="content">
+  <h2 style="text-align: center; margin-bottom: 30px;">📝 What Would You Like to Add?</h2>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+   <div class="content">
+  <h2 style="text-align: center; margin-bottom: 40px; font-size: 28px; color: #2c3e50;">✨ Choose What to Add</h2>
+
+  <div class="button-grid">
+    <a href="show-venue.php" class="action-btn">Wedding Destinations</a>
+    <a href="show-product.php" class="action-btn">Weding Event</a>
+    <a href="show-corproduct.php" class="action-btn">Corporate Event</a>
+  </div>
+</div>
+
+
+
+   <!--  <div class="content">
+      <h2>🛍️ Add New Product</h2>
+      <form action="save-product.php" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Product Name" required />
+        <input type="number" name="price" placeholder="Price (₹)" required />
+        <textarea name="desc" placeholder="Description" rows="3" required></textarea>
+        <input type="file" name="image" accept="image/*" required />
+        <select name="category" required>
+          <option value="">Select Category</option>
+          <option>Electronics</option>
+          <option>Clothing</option>
+          <option>Books</option>
+          <option>Other</option>
+        </select>
+        <button type="submit">✅ Add Product</button>
+      </form>
+    </div>
+  </div> -->
+</body>
+</html>

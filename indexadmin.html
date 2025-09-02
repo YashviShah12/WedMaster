@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7f9;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: #34495e;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: #fff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h1 {
+      font-size: 24px;
+      color: #2c3e50;
+    }
+
+    .dashboard {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      color: #2c3e50;
+    }
+
+    .card p {
+      font-size: 28px;
+      font-weight: bold;
+      color: #16a085;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="indexadmin.html"> Dashboard</a>
+    <!-- <a href="#"> Orders</a> -->
+    <a href="add-product.php">Add Product</a>
+    <a href="all-products.php"> All Products </a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div>Welcome, Admin</div>
+    </div>
+
+    <!-- <div class="dashboard">
+      <div class="card">
+      <h3>Total Users</h3>
+        <p>1,240</p>
+      </div>
+      <div class="card">
+        <h3>Total Sales</h3>
+        <p>₹4,75,000</p>
+      </div>
+      <div class="card">
+        <h3>New Orders</h3>
+        <p>352</p>
+      </div>
+      <div class="card">
+        <h3>Messages</h3>
+        <p>23</p>
+      </div>
+    </div>
+  </div> -->
+
+</body>
+</html>

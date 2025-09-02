@@ -1,0 +1,917 @@
+<?php
+$conn = new mysqli("localhost", "root", "root", "my", 8889);
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+?>
+<!doctype html>
+<html class="no-js" lang="zxx">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Wedding Gallery | Fernweh Weddings</title>
+        <meta name="description" content="Explore our beautiful wedding gallery showcasing magical moments">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="manifest" href="site.webmanifest">
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+        
+        <!-- CSS here -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="assets/css/flaticon.css">
+        <link rel="stylesheet" href="assets/css/slicknav.css">
+        <link rel="stylesheet" href="assets/css/animate.min.css">
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/magnific-popup.css">
+        <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="assets/css/themify-icons.css">
+        <link rel="stylesheet" href="assets/css/slick.css">
+        <link rel="stylesheet" href="assets/css/nice-select.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        
+        <style>
+        :root {
+            --primary-color: #9c7c56;       /* Warm taupe */
+            --secondary-color: #d4af8e;     /* Soft beige */
+            --accent-color: #c8a97e;        /* Light taupe */
+            --dark-color: #3a3226;          /* Dark brown */
+            --light-color: #f8f4ef;         /* Cream */
+            --text-color: #6e6e6e;          /* Gray text */
+            --white: #ffffff;
+            --black: #000000;
+            --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
+            --shadow-xl: 0 15px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+        }
+        
+        /* Header Animation */
+        .header-area {
+            position: fixed;
+            width: 100%;
+            top: -100px;
+            left: 0;
+            z-index: 999;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .header-area.animate-slide-in {
+            top: 0;
+        }
+        
+        .header-sticky.sticky-bar {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Hero Section */
+        .slider-area2 {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-overly {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-overly:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: -1;
+        }
+        
+        .hero-cap h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 60px;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+        
+        .hero-cap p {
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Gallery Section */
+        .gallery-area {
+            padding: 100px 0;
+            background: var(--light-color);
+            position: relative;
+        }
+        
+        .gallery-area:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('assets/img/patterns/dot-pattern.png') repeat;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        .single-gallery {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            height: 100%;
+        }
+        
+        .single-gallery:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .gallery-img {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.8s ease;
+            position: relative;
+        }
+        
+        .single-gallery:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .thumb-content-box {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--white);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .single-gallery:hover .thumb-content-box {
+            opacity: 1;
+        }
+        
+        .thumb-content h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: var(--white);
+        }
+        
+        .menorie-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: var(--transition);
+        }
+        
+        .menorie-icon:hover {
+            background: var(--white);
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+        
+        /* Gallery Carousel Section */
+        .gallery-area2 {
+            padding: 100px 0;
+            background: var(--light-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-area2:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('assets/img/patterns/floral-pattern.png') repeat;
+            opacity: 0.03;
+            z-index: 0;
+        }
+        
+        .section-title {
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        .section-title p {
+            color: var(--text-color);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .gallery-active .gallery-img {
+            position: relative;
+            margin: 0 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            height: 350px;
+        }
+        
+        .gallery-active .gallery-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .gallery-active .gallery-img:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .gallery-active .gallery-img:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--white);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+        }
+        
+        .gallery-active .gallery-img:hover .gallery-caption {
+            bottom: 0;
+            opacity: 1;
+        }
+        
+        .gallery-caption h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .gallery-caption p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 0;
+        }
+        
+        /* Owl Carousel Navigation */
+        .owl-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+            pointer-events: none;
+        }
+        
+        .owl-prev, .owl-next {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color) !important;
+            color: var(--white) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px !important;
+            pointer-events: all;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .owl-prev:hover, .owl-next:hover {
+            background: var(--dark-color) !important;
+            transform: scale(1.1);
+        }
+        
+        /* Map Section */
+        .contact-sections {
+            padding: 100px 20px;
+            background: linear-gradient(rgba(0,0,0,0.03), rgba(0,0,0,0.03)), url('assets/img/patterns/map-pattern.png');
+            position: relative;
+        }
+        
+        .contact-sections:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('assets/img/patterns/dot-pattern.png') repeat;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        .d-area {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: stretch;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .d-area > div {
+            flex: 1 1 45%;
+            min-width: 300px;
+        }
+        
+        /* Map Container */
+        .d-area > div:first-child {
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .d-area > div:first-child:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-5px);
+        }
+        
+        /* Address Container */
+        .d-area > div:last-child {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .d-area > div:last-child:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-5px);
+        }
+        
+        .d-area h3 {
+            font-size: 24px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .d-area h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        .d-area p {
+            font-size: 16px;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-cap h2 {
+                font-size: 48px;
+            }
+            
+            .gallery-img {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-cap h2 {
+                font-size: 36px;
+            }
+            
+            .gallery-area {
+                padding: 60px 0;
+            }
+            
+            .gallery-area2 {
+                padding: 50px 0;
+            }
+            
+            .d-area > div {
+                flex: 1 1 100%;
+            }
+            
+            .d-area > div:first-child {
+                height: 300px;
+            }
+            
+            .gallery-active .gallery-img {
+                height: 250px;
+            }
+            
+            .section-title h2 {
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-cap h2 {
+                font-size: 32px;
+            }
+            
+            .gallery-img {
+                height: 200px;
+            }
+        }
+        </style>
+   </head>
+
+   <body>
+    <!--? Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="assets/img/logo/logo.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader Start -->
+    
+    <!-- Header Start -->
+    <header>
+        <div class="header-area">
+            <div class="main-header header-sticky">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="logo">
+                                <a href="index.php"><img src="assets/img/logo/logo.png" alt="" style="max-width: 180px;"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10">
+                            <!-- Main-menu -->
+                            <div class="main-menu f-right d-none d-lg-block">
+                                <nav>                              
+                                    <ul id="navigation">                                                          
+                                        <li><a href="index.php">Home</a></li>
+                                        <li><a href="#">Services</a>
+                                            <ul class="submenu">
+                                                 <li><a href="wevent.php">Wedding Event</a></li>
+                                                 <li><a href="cevent.php">Corporate Event</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="hotel.php">Destination Wedding</a></li>
+                                        <li><a href="gallery.html">Gallery</a></li>
+                                        <li><a href="#">About</a>
+                                            <ul class="submenu">
+                                                 <li><a href="about.html">About Us</a></li>
+                                                 <li><a href="contact.html">Contact Us</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div> 
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+    
+    <main>
+        <!--? Hero Area Start-->
+        <div class="slider-area2">
+            <div class="single-slider slider-height2 hero-overly d-flex align-items-center" style="background-image: url('assets/img/hero/gallery-hero.jpg')">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap text-center" data-aos="fade-up" data-aos-delay="200">
+                                <h2>Our Gallery</h2>
+                                <p>Capturing the magic of your special moments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Hero Area End -->
+
+        <!--? Gallery Area Start -->
+        <div class="gallery-area section-padding30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="single-gallery mb-30">
+                            <div class="gallery-img" style="background-image: url(assets/img/gallery/our/1.png);">
+                            </div>
+                            <div class="thumb-content-box">
+                                <div class="thumb-content">
+                                    <h3>Romantic Sunset</h3>
+                                    <a href="assets/img/gallery/gallery1.png" class="menorie-icon"> <i class="ti-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="single-gallery mb-30">
+                            <div class="gallery-img" style="background-image: url(assets/img/gallery/our/2.png);">
+                            </div>
+                            <div class="thumb-content-box">
+                                <div class="thumb-content">
+                                    <h3>Elegant Reception</h3>
+                                    <a href="assets/img/gallery/gallery2.png" class="menorie-icon"> <i class="ti-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="single-gallery mb-30">
+                            <div class="gallery-img" style="background-image: url(assets/img/gallery/our/3.png);">
+                            </div>
+                            <div class="thumb-content-box">
+                                <div class="thumb-content">
+                                    <h3>Beautiful Ceremony</h3>
+                                    <a href="assets/img/gallery/gallery3.png" class="menorie-icon"> <i class="ti-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                        <div class="single-gallery mb-30">
+                            <div class="gallery-img" style="background-image: url(assets/img/gallery/our/4.png);">
+                            </div>
+                            <div class="thumb-content-box">
+                                <div class="thumb-content">
+                                    <h3>First Dance</h3>
+                                    <a href="assets/img/gallery/gallery4.png" class="menorie-icon"> <i class="ti-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery Area End -->
+        
+        <!--? Gallery Carousel Start -->
+        <div class="gallery-area2 fix">
+            <div class="container-fluid p-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-title text-center mb-60" data-aos="fade-up">
+                            <h2>Memorable Moments</h2>
+                            <p>Captured with love and perfection</p>
+                        </div>
+                        <div class="gallery-active owl-carousel" data-aos="fade-up" data-aos-delay="200">
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery01.png" alt="Wedding Decor"></a>
+                                <div class="gallery-caption">
+                                    <h4>Elegant Decor</h4>
+                                    <p>Beautiful table settings</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery02.png" alt="Bridal Bouquet"></a>
+                                <div class="gallery-caption">
+                                    <h4>Bridal Bouquet</h4>
+                                    <p>Handcrafted floral designs</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery03.png" alt="Cake Cutting"></a>
+                                <div class="gallery-caption">
+                                    <h4>Cake Ceremony</h4>
+                                    <p>Sweet moments together</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery04.png" alt="Table Setting"></a>
+                                <div class="gallery-caption">
+                                    <h4>Table Setting</h4>
+                                    <p>Exquisite dining experience</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery05.png" alt="Bride Preparation"></a>
+                                <div class="gallery-caption">
+                                    <h4>Bride Preparation</h4>
+                                    <p>Getting ready moments</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery06.png" alt="Groom Preparation"></a>
+                                <div class="gallery-caption">
+                                    <h4>Groom Preparation</h4>
+                                    <p>Stylish groom moments</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery07.png" alt="Vows Exchange"></a>
+                                <div class="gallery-caption">
+                                    <h4>Vows Exchange</h4>
+                                    <p>Emotional ceremony</p>
+                                </div>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="assets/img/gallery/gallery08.png" alt="Sparkler Exit"></a>
+                                <div class="gallery-caption">
+                                    <h4>Sparkler Exit</h4>
+                                    <p>Magical farewell</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery Carousel End -->
+        
+        <!--? Start map Area-->
+        <section class="contact-sections">
+            <div class="d-area">
+                <!-- 📍 Map Section -->
+                <div data-aos="fade-right">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.809707670609!2d72.55595607512873!3d23.03075817916801!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f1a21dffa5%3A0x5b32d82ad98185a3!2sFernweh%20Vacations!5e0!3m2!1sen!2sin!4v1749557384357!5m2!1sen!2sin" 
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+                <!-- 🏠 Address Section -->
+                <div data-aos="fade-left">
+                    <h3>📍 Our Address</h3>
+                    <p>
+                        321, Super Mall,<br>
+                        Chimanlal Girdharlal Rd,<br>
+                        nr. Lal Bunglow,<br>
+                        New Commercial Mills Staff Society,<br>
+                        Ellisbridge, Ahmedabad,<br>
+                        Gujarat 380009
+                    </p>
+                    <div class="footer-social mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--? End map Area -->
+    </main>
+    
+    <!-- Footer Start -->
+    <footer class="footer-main" data-background="assets/img/gallery/section_bg4.png">
+        <div class="footer-area footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-30">
+                                <!-- logo -->
+                                <div class="footer-logo">
+                                    <a href="index.php"><img src="assets/img/logo/logo2_footer.png" alt="" style="max-width: 250px;"></a>
+                                </div>
+                               <!--  <div class="footer-social mt-30">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Wedding Services</h4>
+                                <ul>
+                                    <li><a href="#">Venue Selection</a></li>
+                                    <li><a href="#">Catering</a></li>
+                                    <li><a href="#">Photography</a></li>
+                                    <li><a href="#">Floral Design</a></li>
+                                    <li><a href="#">Entertainment</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>About Us</h4>
+                                <ul>
+                                    <li><a href="about.html">Our Story</a></li>
+                                    <li><a href="#">Testimonials</a></li>
+                                    <li><a href="#">Our Team</a></li>
+                                    <li><a href="#">Careers</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Newsletter</h4>
+                                <p style="font-weight: 500; color: #ffffff;">Subscribe for wedding tips and special offers</p>
+                                <form action="#" class="newsletter-form">
+                                    <input type="email" placeholder="Your Email">
+                                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer-bottom area -->
+            <div class="footer-bottom-area">
+                <div class="container">
+                    <div class="footer-border">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-xl-12">
+                                <div class="footer-copy-right text-center">
+                                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart" aria-hidden="true" style="color: var(--secondary-color);"></i> by Fernweh Weddings</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- JS here -->
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+    <script src="./assets/js/gijgo.min.js"></script>
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <script src="./assets/js/jquery.scrollUp.min.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+    <script src="./assets/js/jquery.counterup.min.js"></script>
+    <script src="./assets/js/waypoints.min.js"></script>
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    
+    <script>
+    // Initialize AOS
+    AOS.init({
+        duration: 1000,
+        once: true,
+        easing: 'ease-in-out'
+    });
+    
+    // Preloader
+    window.addEventListener("load", function() {
+        const preloader = document.getElementById("preloader-active");
+        preloader.classList.add("fade-out");
+        setTimeout(() => {
+            preloader.style.display = "none";
+        }, 800);
+    });
+    
+    // Header Animation
+    document.addEventListener("DOMContentLoaded", function() {
+        const header = document.querySelector(".header-area");
+        setTimeout(() => {
+            header.classList.add("animate-slide-in");
+        }, 500);
+    
+        // Sticky Header on Scroll
+        window.addEventListener("scroll", function() {
+            const mainHeader = document.querySelector(".main-header");
+            if (window.scrollY > 100) {
+                mainHeader.classList.add("sticky-bar");
+            } else {
+                mainHeader.classList.remove("sticky-bar");
+            }
+        });
+        
+        // Initialize Owl Carousel with navigation and autoplay
+        $('.gallery-active').owlCarousel({
+            loop: true,
+            margin: 30,
+            items: 3,
+            nav: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                576: {
+                    items: 2
+                },
+                768: {
+                    items: 3
+                },
+                992: {
+                    items: 4
+                }
+            }
+        });
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Gallery image hover effect
+    document.querySelectorAll('.single-gallery').forEach(gallery => {
+        gallery.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+            this.querySelector('.gallery-img').style.transform = 'scale(1.05)';
+        });
+        gallery.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.querySelector('.gallery-img').style.transform = 'scale(1)';
+        });
+    });
+    </script>
+   </body>
+</html>
